@@ -8,12 +8,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
-import com.tucs.business.dao.interfaces.BaseDao;
 import com.tucs.core.commons.log.ILogger;
 import com.tucs.core.commons.log.LogManager;
 import com.tucs.core.model.entity.BaseModel;
 
-public class AbstractBaseDao<T extends BaseModel> implements BaseDao<T>{
+public class AbstractBaseDao<T extends BaseModel> {
 	protected final static ILogger LOGGER = LogManager.getStaticLogger(AbstractBaseDao.class);
 
 	private final Class<T> klass;
