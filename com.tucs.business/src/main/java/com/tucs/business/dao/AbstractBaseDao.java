@@ -53,7 +53,7 @@ public class AbstractBaseDao<T extends BaseModel> implements BaseDao<T>{
 		return entity;
 	}
 	
-	public T get(Double id) {
+	public T get(Object id) {
 		return getEntityManager().find(klass, id);
 	}
 	

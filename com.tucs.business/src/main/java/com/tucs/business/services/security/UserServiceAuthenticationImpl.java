@@ -4,7 +4,7 @@ import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tucs.business.dao.security.interfaces.UserAuthenticationDao;
-import com.tucs.business.services.interfaces.UserServiceAuthentication;
+import com.tucs.business.services.interfaces.security.UserServiceAuthentication;
 import com.tucs.core.model.entity.EnUser;
 
 public class UserServiceAuthenticationImpl implements UserServiceAuthentication {

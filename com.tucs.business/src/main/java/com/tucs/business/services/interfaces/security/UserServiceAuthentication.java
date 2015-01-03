@@ -1,7 +1,8 @@
-package com.tucs.business.services.interfaces;
+package com.tucs.business.services.interfaces.security;
 
 import javax.transaction.Transactional;
 
+import com.tucs.business.services.interfaces.BaseService;
 import com.tucs.core.model.entity.EnUser;
 
 public interface UserServiceAuthentication extends BaseService{

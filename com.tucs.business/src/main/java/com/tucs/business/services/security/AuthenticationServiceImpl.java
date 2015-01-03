@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.tucs.business.services.interfaces.AuthenticationService;
-import com.tucs.business.services.interfaces.UserServiceAuthentication;
+import com.tucs.business.services.interfaces.security.AuthenticationService;
+import com.tucs.business.services.interfaces.security.UserServiceAuthentication;
 import com.tucs.core.model.entity.EnUser;
 import com.tucs.core.model.entity.EnUser.TypeUser;
 
