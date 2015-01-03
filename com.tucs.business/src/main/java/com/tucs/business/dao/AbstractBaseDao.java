@@ -45,7 +45,7 @@ public class AbstractBaseDao<T extends BaseModel> implements BaseDao<T>{
 	}
 	
 	public T saveOrUpdate(T entity) {
-		if (entity.getId() != null) {
+		if (entity.getIdReflection() != null) {
 			save(entity);			
 		} else {
 			update(entity);			
