@@ -4,7 +4,7 @@ import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tucs.business.dao.EnUserDaoImpl;
+import com.tucs.business.dao.interfaces.EnUserDao;
 import com.tucs.business.services.interfaces.UserService;
 import com.tucs.core.model.entity.EnUser;
 
@@ -12,7 +12,7 @@ import com.tucs.core.model.entity.EnUser;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private EnUserDaoImpl userDao;
+	private EnUserDao userDao;
 	
 	@Override
 	public EnUser getUser(String userId) {
