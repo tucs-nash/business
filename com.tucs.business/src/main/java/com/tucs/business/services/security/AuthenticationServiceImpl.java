@@ -30,11 +30,9 @@ public class AuthenticationServiceImpl implements AuthenticationProvider, Authen
 		ArrayList<GrantedAuthority> privileges = null;
 		EnUser user = userService.getUserByLogin(email);
 
-		if (user == null) {
-			throw new BadCredentialsException("This email is not register in the system");
-		} else if (!passwordEncoder.isPasswordValid(user.getPassword(), password, salt)) {
-			throw new BadCredentialsException("The password is wrong");
-		}	
+		if (user == null || !passwordEncoder.isPasswordValid(user.getPassword(), password, salt)) {
+			throw new BadCredentialsException("");
+		}
 		
 		return new UsernamePasswordAuthenticationToken(user,"", privileges) ;
 	}
