@@ -35,6 +35,11 @@ public class UserServiceAuthenticationImpl implements UserServiceAuthentication 
 	}
 	
 	@Override
+	public EnUser getUser(String id) {
+		return userDao.get(id);
+	}
+	
+	@Override
 	public EnUser updateUser(EnUser user) {
 		user.setUpdatedDate(LocalDateTime.now());
 		return userDao.update(user);

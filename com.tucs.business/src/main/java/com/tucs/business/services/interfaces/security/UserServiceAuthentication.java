@@ -6,6 +6,7 @@ import com.tucs.business.services.interfaces.BaseService;
 import com.tucs.core.model.entity.EnUser;
 
 public interface UserServiceAuthentication extends BaseService{
+	public EnUser getUser(String id);
 	public EnUser getUserByLogin(String email);
 	public EnUser getUserByLoginPassword(String email, String password);
 	public Boolean verifyEmail(String email);

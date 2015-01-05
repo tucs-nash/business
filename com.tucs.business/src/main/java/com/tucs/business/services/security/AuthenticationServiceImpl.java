@@ -79,4 +79,14 @@ public class AuthenticationServiceImpl implements AuthenticationProvider, Authen
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
+
+	@Override
+	public EnUser getUser(String userId) {
+		return userService.getUser(userId);
+	}
+
+	@Override
+	public EnUser updateUser(EnUser user) {
+		return userService.updateUser(user);
+	}
 }
