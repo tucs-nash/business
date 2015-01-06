@@ -63,6 +63,7 @@ public class AbstractBaseDao<T extends BaseModel> {
 	public List<T> list() {
 		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(klass);
+		criteriaQuery.from(klass);
 		TypedQuery<T> typedQuery = getEntityManager().createQuery(criteriaQuery);
 		return typedQuery.getResultList();
 	}
