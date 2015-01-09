@@ -10,5 +10,4 @@ public interface AuthenticationFilter extends BaseService {
 	public EnUser updateUser(EnUser user);
 	public Boolean verifyEmail(String email);
 	public Boolean forgotPassword(String email);
-	public EnUser updateFififi(EnUser user);
 }
