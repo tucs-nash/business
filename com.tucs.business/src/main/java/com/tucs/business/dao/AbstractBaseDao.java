@@ -17,7 +17,7 @@ public class AbstractBaseDao<T extends BaseModel> {
 
 	private final Class<T> klass;
 	
-	@PersistenceContext(unitName="myPersistenceUnit")
+	@PersistenceContext
     protected EntityManager entityManager;
 
 	public AbstractBaseDao(final Class<T> klass) {
