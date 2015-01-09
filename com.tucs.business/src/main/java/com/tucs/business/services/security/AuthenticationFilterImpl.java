@@ -11,12 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.tucs.business.services.interfaces.security.AuthenticationService;
+import com.tucs.business.services.interfaces.security.AuthenticationFilter;
 import com.tucs.business.services.interfaces.security.UserServiceAuthentication;
 import com.tucs.core.model.entity.EnUser;
 import com.tucs.core.model.entity.EnUser.TypeUser;
 
-public class AuthenticationServiceImpl implements AuthenticationProvider, AuthenticationService {
+public class AuthenticationFilterImpl implements AuthenticationProvider, AuthenticationFilter {
 
 	private UserServiceAuthentication userService;
 	private Md5PasswordEncoder passwordEncoder;

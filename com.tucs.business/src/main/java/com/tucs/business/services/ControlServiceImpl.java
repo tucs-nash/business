@@ -15,6 +15,7 @@ import com.tucs.core.commons.dto.ControlDetailsDto;
 import com.tucs.core.commons.dto.ControlLookupsDto;
 import com.tucs.core.commons.enums.ProfileEnum;
 import com.tucs.core.model.entity.EnControl;
+import com.tucs.core.model.entity.EnControl.TypeSplit;
 import com.tucs.core.model.entity.EnControlMonthly;
 import com.tucs.core.model.entity.EnGroup;
 import com.tucs.core.model.entity.EnParticipant;
@@ -44,6 +45,11 @@ public class ControlServiceImpl implements ControlService {
 	public EnControl createControl(EnControl enControl, EnUser enUser) {
 		enControl.setCreatedDate(LocalDateTime.now());
 		enControl.setCreatedUser(enUser);
+		enControl.setDeleted(false);
+		if (enControl.getTypeSplit() == null) {
+			enControl.setTypeSplit(TypeSplit.TYPE_SPLIT_PERSON);
+		}
+		
 		EnControl controlCreated = controlDao.save(enControl);
 		
 		EnGroup groupParent = createAutomaticGroup(enControl, enUser, null);

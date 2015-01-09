@@ -27,7 +27,6 @@ public class EnGroupDaoImpl extends AbstractBaseDao<EnGroup> implements EnGroupD
 		
 		Root<EnGroup> from = criteriaQuery.from(EnGroup.class);
 		
-		criteriaQuery.select(from);		
 		criteriaQuery.where(criteriaBuilder.equal(from.get("control"), new EnControl(controlId))
 				, criteriaBuilder.equal(from.get("deleted"), false)
 				, criteriaBuilder.isNotNull(from.get("groupParent")));

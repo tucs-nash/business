@@ -30,7 +30,6 @@ public class EnParticipantDaoImpl extends AbstractBaseDao<EnParticipant> impleme
 		Root<EnParticipant> from = criteriaQuery.from(EnParticipant.class);
 		Join<EnParticipant, EnGroup> joinGroup = from.join("group");
 		
-		criteriaQuery.select(from);		
 		criteriaQuery.where(criteriaBuilder.equal(joinGroup.get("control"), new EnControl(controlId))
 				, criteriaBuilder.equal(joinGroup.get("deleted"), false)
 				, criteriaBuilder.isNull(joinGroup.get("groupParent")));
