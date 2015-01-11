@@ -16,5 +16,15 @@ public class GroupServiceImpl implements GroupService{
 	public EnGroup createGroup(EnGroup group) {
 		return groupDao.save(group);
 	}
+
+	@Override
+	public EnGroup getGroup(String groupId) {
+		return groupDao.get(groupId);
+	}
+
+	@Override
+	public EnGroup updateGroup(EnGroup group) {
+		return groupDao.update(group);
+	}
 	
 }

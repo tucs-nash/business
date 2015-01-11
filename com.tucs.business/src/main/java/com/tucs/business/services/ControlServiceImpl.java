@@ -5,15 +5,18 @@ import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tucs.business.dao.interfaces.EnCategoryDao;
 import com.tucs.business.dao.interfaces.EnControlDao;
 import com.tucs.business.dao.interfaces.EnControlMonthlyDao;
 import com.tucs.business.dao.interfaces.EnGroupDao;
 import com.tucs.business.dao.interfaces.EnParticipantDao;
+import com.tucs.business.dao.interfaces.EnSavingsDao;
 import com.tucs.business.dao.interfaces.TyCurrencyDao;
 import com.tucs.business.services.interfaces.ControlService;
 import com.tucs.core.commons.dto.ControlDetailsDto;
 import com.tucs.core.commons.dto.ControlLookupsDto;
 import com.tucs.core.commons.enums.ProfileEnum;
+import com.tucs.core.model.entity.EnCategory;
 import com.tucs.core.model.entity.EnControl;
 import com.tucs.core.model.entity.EnControl.TypeSplit;
 import com.tucs.core.model.entity.EnControlMonthly;
@@ -30,6 +33,8 @@ public class ControlServiceImpl implements ControlService {
 	@Autowired private EnGroupDao groupDao; 
 	@Autowired private EnParticipantDao participantDao;
 	@Autowired private EnControlMonthlyDao controlMonthlyDao;
+	@Autowired private EnCategoryDao categoryDao;
+	@Autowired private EnSavingsDao savingsDao;
 	
 	@Override
 	public ControlLookupsDto getControlLookups() {
@@ -69,6 +74,14 @@ public class ControlServiceImpl implements ControlService {
 		enParticipant.setDeleted(false);
 		participantDao.save(enParticipant);
 		
+		EnCategory category = new EnCategory();
+		category.setBudget(0D);
+		category.setControl(controlCreated);
+		category.setCreatedDate(LocalDateTime.now());
+		category.setCreatedUser(enUser);
+		category.setName("Default");
+		categoryDao.save(category);
+		
 		return controlCreated;
 	}
 
@@ -82,7 +95,8 @@ public class ControlServiceImpl implements ControlService {
 	@Override
 	public ControlDetailsDto getControlDetails(String controlId) {
 		ControlDetailsDto controlDetails = new ControlDetailsDto();
-		controlDetails.setControl(controlDao.get(controlId));
+		controlDetails.setCategories(categoryDao.getCategoriesByControl(controlId));
+		controlDetails.setControl(controlDetails.getCategories().get(0).getControl());
 		
 		if (controlDetails.getControl().getShared()) {
 			controlDetails.setGroups(groupDao.getGroupsControl(controlId));
@@ -90,6 +104,14 @@ public class ControlServiceImpl implements ControlService {
 			controlDetails.setParticipants(participantDao.getParticipantsControl(controlId));
 		}
 		
+		if (controlDetails.getControl().getHasClosing()) {
+			controlDetails.setClosings(controlMonthlyDao.getMonthlyClosed(controlId));
+		}
+		
+		if (controlDetails.getControl().getHasSaving()) {
+			controlDetails.setSavings(savingsDao.getSavingByControl(controlId));
+		}
+					
 		return controlDetails;
 	}
 
