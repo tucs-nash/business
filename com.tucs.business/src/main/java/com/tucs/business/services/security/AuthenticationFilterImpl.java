@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.tucs.business.services.interfaces.security.AuthenticationFilter;
 import com.tucs.business.services.interfaces.security.UserServiceAuthentication;
+import com.tucs.core.commons.dto.UserLookupsDto;
 import com.tucs.core.model.entity.EnUser;
 import com.tucs.core.model.entity.EnUser.TypeUser;
 
@@ -41,7 +42,7 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 	public EnUser createUser(EnUser user) {
 		user.setPassword(passwordEncoder.encodePassword(user.getPassword(), salt));
 		//FIXME: CHANGE THIS
-		user.setTypeUser(TypeUser.ADMIN);
+		user.setTypeUser(TypeUser.TYPE_USER_ADMIN);
 		return userService.createUserLogin(user);
 	}
 	
@@ -88,5 +89,10 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 	@Override
 	public EnUser updateUser(EnUser user) {
 		return userService.updateUser(user);
+	}
+
+	@Override
+	public UserLookupsDto getUserLookups() {
+		return userService.getUserLookups();
 	}
 }

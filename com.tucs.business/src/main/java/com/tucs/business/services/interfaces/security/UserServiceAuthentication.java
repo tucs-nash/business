@@ -3,6 +3,7 @@ package com.tucs.business.services.interfaces.security;
 import javax.transaction.Transactional;
 
 import com.tucs.business.services.interfaces.BaseService;
+import com.tucs.core.commons.dto.UserLookupsDto;
 import com.tucs.core.model.entity.EnUser;
 
 public interface UserServiceAuthentication extends BaseService{
@@ -15,4 +16,5 @@ public interface UserServiceAuthentication extends BaseService{
 	public EnUser createUserLogin(EnUser user);
 	@Transactional
 	public EnUser updateUser(EnUser user);
+	public UserLookupsDto getUserLookups();
 }

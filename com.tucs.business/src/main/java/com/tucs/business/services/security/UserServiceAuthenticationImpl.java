@@ -3,13 +3,17 @@ package com.tucs.business.services.security;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.tucs.business.dao.interfaces.TyLanguageDao;
 import com.tucs.business.dao.security.interfaces.UserAuthenticationDao;
 import com.tucs.business.services.interfaces.security.UserServiceAuthentication;
+import com.tucs.core.commons.dto.UserLookupsDto;
 import com.tucs.core.model.entity.EnUser;
 
 public class UserServiceAuthenticationImpl implements UserServiceAuthentication {
 
 	private UserAuthenticationDao userDao;
+	@Autowired
+	private TyLanguageDao languageDao;
 	
 	@Override
 	public EnUser getUserByLogin(String email) {		
@@ -52,6 +56,11 @@ public class UserServiceAuthenticationImpl implements UserServiceAuthentication 
 	@Autowired
 	public void setUserDao(UserAuthenticationDao userDao) {
 		this.userDao = userDao;
+	}
+
+	@Override
+	public UserLookupsDto getUserLookups() {
+		return new UserLookupsDto(languageDao.list());
 	}
 	
 }
