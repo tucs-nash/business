@@ -31,9 +31,7 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 		ArrayList<GrantedAuthority> privileges = null;
 		EnUser user = userService.getUserByLogin(email);
 
-		if (user == null || !passwordEncoder.isPasswordValid(user.getPassword(), password, salt)) {
-			throw new BadCredentialsException("");
-		}
+		this.verifyPassword(user, password);
 		
 		return new UsernamePasswordAuthenticationToken(user,"", privileges) ;
 	}
@@ -94,5 +92,13 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 	@Override
 	public UserLookupsDto getUserLookups() {
 		return userService.getUserLookups();
+	}
+
+	@Override
+	public Boolean verifyPassword(EnUser user,String password) {
+		if (user == null || !passwordEncoder.isPasswordValid(user.getPassword(), password, salt)) {
+			throw new BadCredentialsException("");
+		}
+		return true;
 	}
 }

@@ -12,4 +12,5 @@ public interface AuthenticationFilter extends BaseService {
 	public Boolean verifyEmail(String email);
 	public Boolean forgotPassword(String email);
 	public UserLookupsDto getUserLookups();
+	public Boolean verifyPassword(EnUser user, String password);
 }
