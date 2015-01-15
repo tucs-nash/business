@@ -104,7 +104,7 @@ public class UserServiceAuthenticationImpl implements UserServiceAuthentication 
 
 	@Override
 	public UserLookupsDto getUserLookups() {
-		return new UserLookupsDto(languageDao.list());
+		return new UserLookupsDto(languageDao.listLanguagueOrderByName());
 	}
 	
 }
