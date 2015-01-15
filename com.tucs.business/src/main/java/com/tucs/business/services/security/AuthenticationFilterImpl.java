@@ -29,7 +29,7 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 		String password = String.valueOf(authentication.getCredentials());
   
 		ArrayList<GrantedAuthority> privileges = null;
-		EnUser user = userService.getUserByLogin(email);
+		EnUser user = userService.getUserActiveByLogin(email);
 
 		if (user == null || !passwordEncoder.isPasswordValid(user.getPassword(), password, salt)) {
 			throw new BadCredentialsException("");
@@ -43,7 +43,7 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 		user.setPassword(passwordEncoder.encodePassword(user.getPassword(), salt));
 		//FIXME: CHANGE THIS
 		user.setTypeUser(TypeUser.TYPE_USER_ADMIN);
-		return userService.createUserLogin(user);
+		return userService.createUserLoginInitial(user);
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public class AuthenticationFilterImpl implements AuthenticationProvider, Authent
 
 	@Override
 	public Boolean forgotPassword(String email) {
-		EnUser user = userService.getUserByLogin(email);
+		EnUser user = userService.getUserActiveByLogin(email);
 		if (user != null) {
 			user.setPassword(passwordEncoder.encodePassword("admin123", salt));
 			user = userService.updateUser(user);

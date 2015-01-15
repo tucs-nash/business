@@ -7,5 +7,5 @@ import com.tucs.core.model.entity.EnCategory;
 
 public interface EnCategoryDao extends BaseDao<EnCategory>{
 
-	public List<EnCategory> getCategoriesByControl(String controlId);
+	public List<EnCategory> getCategoriesByControl(String controlId, String categoryId);
 }

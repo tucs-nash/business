@@ -34,5 +34,34 @@ public class EnGroupDaoImpl extends AbstractBaseDao<EnGroup> implements EnGroupD
 		
 		return typedQuery.getResultList();
 	}
+
+	@Override
+	public EnGroup getMainGroupControl(String controlId) {
+		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<EnGroup> criteriaQuery = criteriaBuilder.createQuery(EnGroup.class);
+		
+		Root<EnGroup> from = criteriaQuery.from(EnGroup.class);
+		
+		criteriaQuery.where(criteriaBuilder.equal(from.get("control"), new EnControl(controlId))
+				, criteriaBuilder.equal(from.get("deleted"), false)
+				, criteriaBuilder.isNull(from.get("groupParent")));
+		TypedQuery<EnGroup> typedQuery = getEntityManager().createQuery(criteriaQuery);		
+		
+		return typedQuery.getSingleResult();
+	}
+
+	@Override
+	public EnGroup getGroupWithParticipant(String groupId) {
+		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<EnGroup> criteriaQuery = criteriaBuilder.createQuery(EnGroup.class);
+		
+		Root<EnGroup> from = criteriaQuery.from(EnGroup.class);
+		from.fetch("enParticipants");
+		criteriaQuery.select(from);
+		criteriaQuery.where(criteriaBuilder.equal(from.get("id"), groupId));
+		
+		TypedQuery<EnGroup> typedQuery = getEntityManager().createQuery(criteriaQuery);		
+		return typedQuery.getSingleResult();
+	}
 	
 }

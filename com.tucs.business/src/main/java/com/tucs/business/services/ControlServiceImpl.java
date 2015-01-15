@@ -57,11 +57,12 @@ public class ControlServiceImpl implements ControlService {
 		
 		EnControl controlCreated = controlDao.save(enControl);
 		
-		EnGroup groupParent = createAutomaticGroup(enControl, enUser, null);
+		EnGroup groupParent = createAutomaticGroup(enControl, enUser, null, 1, enControl.getName());
 		EnParticipant enParticipant = new EnParticipant();		
 		if (controlCreated.getShared()) {
-			EnGroup groupChild = createAutomaticGroup(enControl, enUser, groupParent);
-			enParticipant.setGroup(groupChild);
+			EnGroup groupChildMain = createAutomaticGroup(enControl, enUser, groupParent, 1, enControl.getName().concat(" 1"));
+			enParticipant.setGroup(groupChildMain);			
+			createAutomaticGroup(enControl, enUser, groupParent, 0, enControl.getName().concat(" 2"));
 		} else {
 			enParticipant.setGroup(groupParent);
 			createFirstMonthly(enControl, groupParent, enUser);			
@@ -95,7 +96,7 @@ public class ControlServiceImpl implements ControlService {
 	@Override
 	public ControlDetailsDto getControlDetails(String controlId) {
 		ControlDetailsDto controlDetails = new ControlDetailsDto();
-		controlDetails.setCategories(categoryDao.getCategoriesByControl(controlId));
+		controlDetails.setCategories(categoryDao.getCategoriesByControl(controlId, null));
 		controlDetails.setControl(controlDetails.getCategories().get(0).getControl());
 		
 		if (controlDetails.getControl().getShared()) {
@@ -115,13 +116,12 @@ public class ControlServiceImpl implements ControlService {
 		return controlDetails;
 	}
 
-	private EnGroup createAutomaticGroup(EnControl control, EnUser enUser, EnGroup groupParent) {
+	private EnGroup createAutomaticGroup(EnControl control, EnUser enUser, EnGroup groupParent,long amount, String name) {
 		EnGroup group = new EnGroup();
 		group.setControl(control);
 		group.setCreatedDate(LocalDateTime.now());
 		group.setCreatedUser(enUser);
-		group.setOwnerUser(enUser);
-		group.setName(control.getName());
+		group.setName(name);
 		group.setDeleted(false);
 		group.setAmountParticipant(1L);
 		group.setGroupParent(groupParent);

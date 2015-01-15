@@ -8,13 +8,20 @@ import com.tucs.core.model.entity.EnUser;
 
 public interface UserServiceAuthentication extends BaseService{
 	public EnUser getUser(String id);
-	public EnUser getUserByLogin(String email);
 	public EnUser getUserByLoginPassword(String email, String password);
 	public Boolean verifyEmail(String email);
+	public UserLookupsDto getUserLookups();
+
+	public EnUser getUserByLogin(String email);
+	public EnUser getUserActiveByLogin(String email);
+	public EnUser getUserBlockedByLogin(String email);
+	public EnUser getUserDeletedByLogin(String email);
+	public EnUser getUserForgotPasswordByLogin(String email);
 	
 	@Transactional
-	public EnUser createUserLogin(EnUser user);
+	public EnUser createUserLoginInitial(EnUser user);
 	@Transactional
 	public EnUser updateUser(EnUser user);
-	public UserLookupsDto getUserLookups();
+	@Transactional
+	public  EnUser createUserBlocked(String email);
 }

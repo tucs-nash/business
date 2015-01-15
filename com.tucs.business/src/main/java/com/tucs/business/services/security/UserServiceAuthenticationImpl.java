@@ -7,7 +7,9 @@ import com.tucs.business.dao.interfaces.TyLanguageDao;
 import com.tucs.business.dao.security.interfaces.UserAuthenticationDao;
 import com.tucs.business.services.interfaces.security.UserServiceAuthentication;
 import com.tucs.core.commons.dto.UserLookupsDto;
+import com.tucs.core.commons.enums.TypeGetUser;
 import com.tucs.core.model.entity.EnUser;
+import com.tucs.core.model.entity.EnUser.TypeUser;
 
 public class UserServiceAuthenticationImpl implements UserServiceAuthentication {
 
@@ -17,7 +19,27 @@ public class UserServiceAuthenticationImpl implements UserServiceAuthentication 
 	
 	@Override
 	public EnUser getUserByLogin(String email) {		
-		return userDao.getUserByLogin(email);
+		return userDao.getUserByLogin(email, TypeGetUser.NORMAL);
+	}
+	
+	@Override
+	public EnUser getUserBlockedByLogin(String email) {		
+		return userDao.getUserByLogin(email, TypeGetUser.BLOCKED);
+	}
+	
+	@Override
+	public EnUser getUserActiveByLogin(String email) {		
+		return userDao.getUserByLogin(email, TypeGetUser.ACTIVE);
+	}
+	
+	@Override
+	public EnUser getUserDeletedByLogin(String email) {		
+		return userDao.getUserByLogin(email, TypeGetUser.DELETED);
+	}
+	
+	@Override
+	public EnUser getUserForgotPasswordByLogin(String email) {		
+		return userDao.getUserByLogin(email, TypeGetUser.FORGOT_PASSWORD);
 	}
 	
 	@Override
@@ -26,9 +48,31 @@ public class UserServiceAuthenticationImpl implements UserServiceAuthentication 
 	}
 
 	@Override
-	public EnUser createUserLogin(EnUser user) {
+	public EnUser createUserLoginInitial(EnUser user) {
+		EnUser userBlocked = getUserBlockedByLogin(user.getEmail());
+		if (userBlocked != null) {
+			user.setId(userBlocked.getId());
+			user.setUpdatedDate(LocalDateTime.now());
+		} else {			
+			user.setCreatedDate(LocalDateTime.now());
+		}
+		
 		user.setDeleted(false);
 		user.setForgotPassword(false);
+		return userDao.saveOrUpdate(user);
+	}
+	
+	@Override
+	public EnUser createUserBlocked(String email) {
+		EnUser user = new EnUser();
+		user.setEmail(email);
+		user.setFirstName(" ");
+		user.setLanguage(null);
+		user.setLastName(" ");
+		user.setPassword(email);
+		user.setTypeUser(TypeUser.TYPE_USER_NORMAL);
+		user.setDeleted(true);
+		user.setForgotPassword(true);
 		user.setCreatedDate(LocalDateTime.now());
 		return userDao.save(user);
 	}
