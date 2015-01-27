@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.tucs.business.dao.interfaces.EnCategoryDao;
 import com.tucs.business.dao.interfaces.EnControlDao;
+import com.tucs.business.dao.interfaces.EnTransactionDao;
 import com.tucs.business.services.interfaces.CategoryService;
 import com.tucs.core.commons.dto.CategoryLookupsDto;
 import com.tucs.core.model.entity.EnCategory;
@@ -17,6 +18,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Autowired EnCategoryDao categoryDao;
 	@Autowired EnControlDao controlDao;
+	@Autowired EnTransactionDao transactionDao;
 
 	@Override
 	public EnCategory getCategory(String categoryId) {
@@ -40,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService{
 		enCategory.setUpdatedDate(LocalDateTime.now());
 		return categoryDao.update(enCategory);
 	}
-
+	
 	@Override
 	public CategoryLookupsDto getCategoryLookup(String controlId, String categoryId) {
 		CategoryLookupsDto lookupsDto = new CategoryLookupsDto();
@@ -52,5 +54,4 @@ public class CategoryServiceImpl implements CategoryService{
 		lookupsDto.setCategories(categoryDao.getCategoriesByControl(controlId, categoryId));
 		return lookupsDto;
 	}
-	
 }

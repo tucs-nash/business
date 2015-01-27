@@ -9,5 +9,6 @@ import com.tucs.core.model.entity.EnUser;
 public interface EnParticipantDao extends BaseDao<EnParticipant> {
 
 	public List<EnParticipant> getParticipantsControl(String controlId);
+	public List<EnParticipant> getParticipantsGroup(String groupId);
 	public Boolean verifyParticipant(EnUser user, String groupId);
 }

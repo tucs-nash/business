@@ -8,5 +8,6 @@ import com.tucs.core.model.entity.EnControlMonthly;
 public interface EnControlMonthlyDao extends BaseDao<EnControlMonthly>{
 
 	public List<EnControlMonthly> getMonthlyClosed(String controlId);
+	public List<EnControlMonthly> getCurrentMonthly(String controlId);
 
 }

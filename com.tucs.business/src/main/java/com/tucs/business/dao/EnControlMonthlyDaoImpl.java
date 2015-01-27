@@ -32,5 +32,19 @@ public class EnControlMonthlyDaoImpl extends AbstractBaseDao<EnControlMonthly> i
 		TypedQuery<EnControlMonthly> query = getEntityManager().createQuery(criteriaQuery);
 		return query.getResultList();
 	}
+	
+	@Override
+	public List<EnControlMonthly> getCurrentMonthly(String controlId) {
+		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<EnControlMonthly> criteriaQuery = criteriaBuilder.createQuery(EnControlMonthly.class);
+		
+		Root<EnControlMonthly> from = criteriaQuery.from(EnControlMonthly.class);
+		
+		criteriaQuery.where(criteriaBuilder.equal(from.get("control"), new EnControl(controlId)),
+				criteriaBuilder.equal(from.get("currentMonthly"), true));
+		TypedQuery<EnControlMonthly> query = getEntityManager().createQuery(criteriaQuery);
+		
+		return query.getResultList();
+	}
 
 }

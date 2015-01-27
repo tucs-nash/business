@@ -56,8 +56,9 @@ public class AbstractBaseDao<T extends BaseModel> {
 		return getEntityManager().find(klass, id);
 	}
 	
-	public void delete(T entity) {
-		getEntityManager().remove(entity);
+	public void delete(Object id) {
+		T removed = getEntityManager().getReference(klass, id);
+		getEntityManager().remove(removed);
 	}
 	
 	public List<T> list() {

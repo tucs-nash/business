@@ -11,6 +11,6 @@ public interface BaseDao<T extends BaseModel> {
 	public T update(T entity);
 	public T saveOrUpdate(T entity);
 	public T get(Object id);
-	public void delete(T entity);
+	public void delete(Object id);
 	public List<T> list();
 }

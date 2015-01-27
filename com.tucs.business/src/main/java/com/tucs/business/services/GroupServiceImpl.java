@@ -27,7 +27,23 @@ public class GroupServiceImpl implements GroupService{
 	
 	@Override
 	public EnGroup createGroup(EnGroup group, EnUser user) {
-		return groupDao.save(group);
+		group.setCreatedDate(LocalDateTime.now());
+		group.setCreatedUser(user);
+		group.setDeleted(false);
+		group.setAmountParticipant(group.getEnParticipants()!= null ? new Long(group.getEnParticipants().size()) : 0L);
+		groupDao.save(group);
+		
+		if (group.getEnParticipants() != null) {
+			for (EnParticipant participant : group.getEnParticipants()) {
+				participant.setGroup(group);
+				participant.setCreatedDate(LocalDateTime.now());
+				participant.setCreatedUser(user);
+				participant.setDeleted(false);
+				enParticipantDao.save(participant);
+			}			
+		} 
+		group.setEnParticipants(null);
+		return group;
 	}
 
 	@Override
@@ -38,17 +54,45 @@ public class GroupServiceImpl implements GroupService{
 	
 	@Override
 	public EnGroup getGroupWithParticipant(String groupId) {
-		return groupDao.getGroupWithParticipant(groupId);
+		EnGroup enGroupWithParticipant = groupDao.get(groupId);		
+		enGroupWithParticipant.setEnParticipants(enParticipantDao.getParticipantsGroup(groupId));
+		return enGroupWithParticipant;
 	}
 
 	@Override
 	public EnGroup updateGroup(EnGroup group, EnUser user) {
-		return groupDao.update(group);
+		if (group.getEnParticipants() != null) {
+			for (EnParticipant participant : group.getEnParticipants()) {
+				if (participant.getId() != null) {
+					if (participant.getDeleted()) {
+						enParticipantDao.delete(participant.getId());;
+						group.setAmountParticipant(group.getAmountParticipant() - 1);
+					} else {
+						participant.setUpdatedDate(LocalDateTime.now());
+						participant.setUpdatedUser(user);
+						enParticipantDao.update(participant);						
+					}
+				} else {
+					participant.setGroup(new EnGroup(group.getId()));
+					participant.setDeleted(false);
+					participant.setCreatedDate(LocalDateTime.now());
+					participant.setCreatedUser(user);
+					enParticipantDao.save(participant);				
+					group.setAmountParticipant(group.getAmountParticipant() + 1);
+				}
+			}
+		} 
+		group.setUpdatedDate(LocalDateTime.now());
+		group.setUpdatedUser(user);
+		groupDao.update(group);
+
+		group.setEnParticipants(null);
+		return group;
 	}
 
 	@Override
 	public EnParticipant createParticipantForGroup(EnParticipant enParticipant) {
-		EnUser user = verifyParticipant(enParticipant.getUser().getEmail(), enParticipant.getGroup().getId());
+		EnUser user = verifyParticipant(enParticipant.getUser().getEmail(), null);
 		enParticipant.setUser(user);
 		return enParticipant;
 	}
@@ -91,7 +135,7 @@ public class GroupServiceImpl implements GroupService{
 		EnUser user  = userService.getUserByLogin(email);
 		if (user == null) {
 			user = userService.createUserBlocked(email);
-		} else if (enParticipantDao.verifyParticipant(user, groupId)) {
+		} else if (groupId != null && enParticipantDao.verifyParticipant(user, groupId)) {
 			user = null;
 		}	
 		return user;

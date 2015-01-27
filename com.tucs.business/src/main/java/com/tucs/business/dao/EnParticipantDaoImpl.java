@@ -42,6 +42,19 @@ public class EnParticipantDaoImpl extends AbstractBaseDao<EnParticipant> impleme
 	}
 
 	@Override
+	public List<EnParticipant> getParticipantsGroup(String groupId) {
+		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<EnParticipant> criteriaQuery = criteriaBuilder.createQuery(EnParticipant.class);
+		
+		Root<EnParticipant> from = criteriaQuery.from(EnParticipant.class);
+		
+		criteriaQuery.where(criteriaBuilder.equal(from.get("group"), new EnGroup(groupId)));
+		TypedQuery<EnParticipant> typedQuery = getEntityManager().createQuery(criteriaQuery);		
+		
+		return typedQuery.getResultList();
+	}
+
+	@Override
 	public Boolean verifyParticipant(EnUser user, String groupId) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
